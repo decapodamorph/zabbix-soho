@@ -13,7 +13,7 @@ RUN pip3 install py-zabbix
 USER zabbix
 
 # Copy Zabbix API script
-COPY zabbix-setup.py /usr/local/bin/zabbix_setup.py
+COPY zabbix_setup.py /usr/local/bin/zabbix_setup.py
 RUN chmod +x /usr/local/bin/zabbix_setup.py
 
 # Use default entrypoint
