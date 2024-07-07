@@ -1,13 +1,16 @@
 #!/bin/bash
 
-# Prompt for MySQL credentials
-read -p "Enter MYSQL_ROOT_PASSWORD: " MYSQL_ROOT_PASSWORD
+# Prompt for MySQL credentials and hide input for passwords
+read -sp "Enter MYSQL_ROOT_PASSWORD: " MYSQL_ROOT_PASSWORD
+echo
 read -p "Enter MYSQL_DATABASE: " MYSQL_DATABASE
 read -p "Enter MYSQL_USER: " MYSQL_USER
-read -p "Enter MYSQL_PASSWORD: " MYSQL_PASSWORD
+read -sp "Enter MYSQL_PASSWORD: " MYSQL_PASSWORD
+echo
 
-# Prompt for Zabbix Admin password
-read -p "Enter ZABBIX_PASSWORD for Admin user: " ZABBIX_PASSWORD
+# Prompt for Zabbix Admin password and hide input
+read -sp "Enter ZABBIX_PASSWORD for Admin user: " ZABBIX_PASSWORD
+echo
 
 # Write to .env file
 cat <<EOL > .env

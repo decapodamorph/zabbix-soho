@@ -3,18 +3,22 @@ FROM zabbix/zabbix-server-mysql:alpine-6.0-latest
 # Switch to root user to install necessary packages
 USER root
 
-# Install Python and pip
-RUN apk add --no-cache python3 py3-pip
+# Install Python, pip, and venv
+RUN apk add --no-cache python3 py3-pip py3-virtualenv
 
-# Install Zabbix API Python client
-RUN pip3 install py-zabbix
+# Create and activate a virtual environment
+RUN python3 -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
 
-# Switch back to zabbix user
-USER zabbix
+# Install Zabbix API Python client in the virtual environment
+RUN pip install py-zabbix
 
 # Copy Zabbix API script
 COPY zabbix_setup.py /usr/local/bin/zabbix_setup.py
 RUN chmod +x /usr/local/bin/zabbix_setup.py
+
+# Switch back to zabbix user
+USER zabbix
 
 # Use default entrypoint
 ENTRYPOINT ["/sbin/tini", "--", "/usr/bin/docker-entrypoint.sh"]
