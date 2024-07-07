@@ -1,16 +1,20 @@
 FROM zabbix/zabbix-server-mysql:alpine-6.0-latest
 
+# Switch to root user to install necessary packages
+USER root
+
 # Install Python and pip
 RUN apk add --no-cache python3 py3-pip
 
-# Install python-dotenv
-RUN pip install python-dotenv requests
+# Install Zabbix API Python client
+RUN pip3 install py-zabbix
 
-# Copy the setup script into the container
-COPY zabbix_setup.py /usr/local/bin/zabbix_setup.py
+# Switch back to zabbix user
+USER zabbix
 
-# Make the script executable
-RUN chmod +x /usr/local/bin/zabbix_setup.py
+# Copy Zabbix API script
+COPY zabbix-setup.py /usr/local/bin/zabbix-setup.py
+RUN chmod +x /usr/local/bin/zabbix-setup.py
 
-# Run the setup script (you can choose the appropriate timing to run it)
-CMD ["sh", "-c", "zabbix_server && python3 /usr/local/bin/zabbix_setup.py"]
+# Use default entrypoint
+ENTRYPOINT ["/sbin/tini", "--", "/usr/bin/docker-entrypoint.sh"]
