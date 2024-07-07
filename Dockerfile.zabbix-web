@@ -1,11 +1,17 @@
 FROM zabbix/zabbix-web-apache-mysql:alpine-6.0-latest
 
+# Switch to root user to copy files and change permissions
+USER root
+
 # Copy Apache configuration
 COPY apache-config /etc/apache2/sites-enabled
 
-# Set up entrypoint script
+# Copy entrypoint script
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Switch back to zabbix user
+USER zabbix
 
 # Use custom entrypoint
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

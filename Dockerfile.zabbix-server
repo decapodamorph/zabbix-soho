@@ -6,7 +6,7 @@ USER root
 # Install Python, pip, and venv
 RUN apk add --no-cache python3 py3-pip py3-virtualenv
 
-# Create and activate a virtual environment
+# Create and activate a virtual environment (optional but recommended)
 RUN python3 -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
@@ -20,5 +20,5 @@ RUN chmod +x /usr/local/bin/zabbix_setup.py
 # Switch back to zabbix user
 USER zabbix
 
-# Use default entrypoint
+# Use default entrypoint script provided by Zabbix base image
 ENTRYPOINT ["/sbin/tini", "--", "/usr/bin/docker-entrypoint.sh"]
