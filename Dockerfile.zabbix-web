@@ -1,0 +1,22 @@
+FROM zabbix/zabbix-web-apache-mysql:alpine-6.0-latest
+
+# Install necessary packages for Certbot and cron
+RUN apk add --no-cache certbot certbot-apache cronie
+
+# Copy Apache configuration and SSL certificates
+COPY apache-config /etc/apache2/sites-enabled
+COPY ssl /etc/apache2/ssl
+
+# Ensure permissions are correct
+RUN chmod -R 755 /etc/apache2/ssl
+
+# Copy entrypoint and renewal scripts
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY renew_cert.sh /usr/local/bin/renew_cert.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/renew_cert.sh
+
+# Set up cron job for certificate renewal
+RUN echo "0 3 * * * /usr/local/bin/renew_cert.sh >> /var/log/cron.log 2>&1" | crontab -
+
+# Use custom entrypoint
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

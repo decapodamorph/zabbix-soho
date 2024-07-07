@@ -1,0 +1,16 @@
+FROM zabbix/zabbix-server-mysql:alpine-6.0-latest
+
+# Install Python and pip
+RUN apk add --no-cache python3 py3-pip
+
+# Install python-dotenv
+RUN pip install python-dotenv requests
+
+# Copy the setup script into the container
+COPY zabbix_setup.py /usr/local/bin/zabbix_setup.py
+
+# Make the script executable
+RUN chmod +x /usr/local/bin/zabbix_setup.py
+
+# Run the setup script (you can choose the appropriate timing to run it)
+CMD ["sh", "-c", "zabbix_server && python3 /usr/local/bin/zabbix_setup.py"]
