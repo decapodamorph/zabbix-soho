@@ -54,12 +54,10 @@ services:
       PHP_TZ: Europe/Warsaw
     volumes:
       - ./apache-config:/etc/apache2/sites-enabled
-      - ./ssl:/etc/apache2/ssl
     networks:
       - zabbix-net
     ports:
       - "80:80"
-      - "443:443"
 
 networks:
   zabbix-net:
