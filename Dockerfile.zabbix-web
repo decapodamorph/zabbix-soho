@@ -1,4 +1,4 @@
-FROM zabbix/zabbix-web-apache-mysql:alpine-6.0-latest
+FROM zabbix/zabbix-web-apache-mysql:alpine-6.0
 
 # Switch to root user to copy files and change permissions
 USER root

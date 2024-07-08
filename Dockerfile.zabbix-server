@@ -1,4 +1,4 @@
-FROM zabbix/zabbix-server-mysql:alpine-6.0-latest
+FROM zabbix/zabbix-server-mysql:alpine-6.0
 
 # Switch to root user to install necessary packages
 USER root
@@ -21,4 +21,4 @@ RUN chmod +x /usr/local/bin/zabbix_setup.py
 USER zabbix
 
 # Use default entrypoint script provided by Zabbix base image
-ENTRYPOINT ["/sbin/tini", "--", "/usr/bin/docker-entrypoint.sh"]
+CMD ["/usr/sbin/zabbix_web_service", "-c", "/etc/zabbix/zabbix_web_service.conf"]
